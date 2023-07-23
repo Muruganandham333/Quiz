@@ -1,38 +1,81 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  height: 90vh;
+  width: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+nav {
+  display: flex;
+  background-color: blueviolet;
+  color: white;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.question {
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid gray; */
+  margin: auto;
+  /* background: yellow; */
+  width: 50%;
+  height: auto;
+}
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 85vh;
+}
+
+.option {
+  text-align: start;
+  padding: 0px 20px;
+}
+
+.option p {
+  border: 2px solid gray;
+  padding: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+  background-color: #e5e5e580;
+}
+
+.option p:hover {
+  background-color: blueviolet;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.option p:active {
+  background-color: blueviolet;
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.question h4 {
+  text-align: left;
+  padding-left: 15px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.question button {
+  width: fit-content;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-size: 17px;
+  cursor: pointer;
+  align-items: fl;
+  font-weight: 600;
+  background-color: blueviolet;
+  border: none;
+  color: white;
+}
+
+.redirect-btn {
+  display: flex;
+  justify-content: end;
+  padding: 0px 15px;
 }
