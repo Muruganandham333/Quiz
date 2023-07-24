@@ -52,29 +52,33 @@ function App() {
   ];
 
   const [question, setQuestion] = useState(questions);
+  console.log("set question value");
   const [currQuestion, setcurrQuestion] = useState(0);
   const [isQuizStart, setIsQuizStart] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
+  const [refreshIntervalId, setRefreshIntervalId] = useState(null);
   const options = ["A", "B", "C", "D"];
-  var refreshIntervalId = null;
+  // var refreshIntervalId = null;
 
   const selectedOptionStyle = {
     backgroundColor: "blueviolet",
     color: "white",
   };
+
   function handleOptionClick(val) {
-    const oldQuestions = questions.slice();
-    // console.log("oldQuestions");
+    // const oldQuestions = questions.slice();
+    // const currentQuestion = oldQuestions[currQuestion];
+    // console.log("currentQuestion");
+    // console.log(currentQuestion);
+    // currentQuestion.selectedAnswer = val;
+    // oldQuestions[currQuestion] = currentQuestion;
     // console.log(oldQuestions);
-    const currentQuestion = oldQuestions[currQuestion];
-    currentQuestion.selectedAnswer = val;
-    // oldQuestions[currQuestion].selectedAnswer = val;
-    // console.log("Current index " + currQuestion);
-    // console.log("oldQuestions after set selected answer ");
-    oldQuestions[currQuestion] = currentQuestion;
-    console.log(oldQuestions);
-    setQuestion(oldQuestions);
-    console.log("refreshIntervalId " + refreshIntervalId);
+    // setQuestion(oldQuestions);
+    const questionAndAnswer = Object.assign({}, question[currQuestion]);
+    questionAndAnswer.selectedAnswer = val;
+    const newQuestions = question.slice();
+    newQuestions[currQuestion] = questionAndAnswer;
+    setQuestion(newQuestions);
   }
 
   function getOpotions(question) {
@@ -132,9 +136,11 @@ function App() {
 
   function handleStartQuizBtn() {
     setIsQuizStart(true);
-    refreshIntervalId = setInterval(() => {
+
+    const refreshIntervalId = setInterval(() => {
       startTimer();
     }, 1000);
+    setRefreshIntervalId(refreshIntervalId);
     console.log("refreshIntervalId " + refreshIntervalId);
     // clearInterval(refreshIntervalId);
     // setInterval(() => {
@@ -202,7 +208,32 @@ function App() {
   }
 
   function Result() {
-    return <h1>Result Page</h1>;
+    return (
+      <div className="result-page">
+        <button type="submit">Try Again</button>
+        <table>
+          <thead>
+            <th></th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total Question</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Correct</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>Incorrect</td>
+              <td>5</td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="submit">Review Answers</button>
+      </div>
+    );
   }
 
   return (
