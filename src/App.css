@@ -79,3 +79,43 @@ nav {
   justify-content: end;
   padding: 0px 15px;
 }
+
+.result-page {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  padding: 10px;
+  margin: auto;
+  width: 50%;
+}
+
+.result-container {
+  height: 90vh;
+}
+
+.btn {
+  /* border-radius: 50px; */
+  padding: 10px 25px;
+  font-size: 17px;
+  cursor: pointer;
+  align-items: fl;
+  font-weight: 600;
+  background-color: blueviolet;
+  border: none;
+  color: white;
+}
+
+.total-question {
+  color: black;
+  font-weight: 700;
+}
+
+.correct {
+  color: green;
+  font-weight: 700;
+}
+
+.in-correct {
+  color: red;
+  font-weight: 700;
+}

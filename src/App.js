@@ -209,29 +209,35 @@ function App() {
 
   function Result() {
     return (
-      <div className="result-page">
-        <button type="submit">Try Again</button>
-        <table>
-          <thead>
-            <th></th>
-            <th></th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Total Question</td>
-              <td>10</td>
-            </tr>
-            <tr>
-              <td>Correct</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>Incorrect</td>
-              <td>5</td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="submit">Review Answers</button>
+      <div className="result-container">
+        <div className="result-page">
+          <button className="btn" type="submit">
+            Try Again
+          </button>
+          <table>
+            <thead>
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Question</td>
+                <td className="total-question">10</td>
+              </tr>
+              <tr>
+                <td>Correct</td>
+                <td className="correct">3</td>
+              </tr>
+              <tr>
+                <td>Incorrect</td>
+                <td className="in-correct">5</td>
+              </tr>
+            </tbody>
+          </table>
+          <button className="btn" type="submit">
+            Review Answers
+          </button>
+        </div>
       </div>
     );
   }
