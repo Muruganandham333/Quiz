@@ -27,14 +27,14 @@ function App() {
       questionNo: 3,
       question: "Which of the following is not a Java keyword?",
       options: ["static;", "try", "new", "Integer"],
-      correctAnswer: "double",
+      correctAnswer: "Integer",
       selectedAnswer: "",
     },
     {
       questionNo: 4,
       question: "Choose the appropriate data type for this field: isSwimmer",
       options: ["double;", "boolean", "string", "int"],
-      correctAnswer: "double",
+      correctAnswer: "boolean",
       selectedAnswer: "",
     },
     {
@@ -207,7 +207,10 @@ function App() {
     );
   }
 
-  function Result() {
+  function Result({ question }) {
+    const correctCount = getCrtQuesCount(question);
+    const questionCount = question.length;
+    console.log("correctCount " + correctCount);
     return (
       <div className="result-container">
         <div className="result-page">
@@ -222,19 +225,23 @@ function App() {
             <tbody>
               <tr>
                 <td>Total Question</td>
-                <td className="total-question">10</td>
+                <td className="total-question">{questionCount}</td>
               </tr>
               <tr>
                 <td>Correct</td>
-                <td className="correct">3</td>
+                <td className="correct">{correctCount}</td>
               </tr>
               <tr>
                 <td>Incorrect</td>
-                <td className="in-correct">5</td>
+                <td className="in-correct">{questionCount - correctCount}</td>
               </tr>
             </tbody>
           </table>
-          <button className="btn" type="submit">
+          <button
+            className="btn"
+            type="submit"
+            onClick={() => handleReviewAnswer()}
+          >
             Review Answers
           </button>
         </div>
@@ -242,9 +249,38 @@ function App() {
     );
   }
 
+  function handleReviewAnswer() {
+    console.log("triggred");
+    return <Question />;
+  }
+
+  function getCrtQuesCount(question) {
+    console.log(question);
+    let correctCount = 0;
+    question.map((quest) => {
+      if (
+        quest.selectedAnswer !== "" &&
+        quest.selectedAnswer === quest.correctAnswer
+      ) {
+        correctCount += 1;
+      }
+    });
+    return correctCount;
+  }
+
+  function Answer() {
+    <Question />;
+  }
+
   return (
     <div>
-      {isLastQuestion ? <Result /> : isQuizStart ? <Question /> : <StartQuiz />}
+      {isLastQuestion ? (
+        <Result question={question} />
+      ) : isQuizStart ? (
+        <Question />
+      ) : (
+        <StartQuiz />
+      )}
     </div>
   );
 }
