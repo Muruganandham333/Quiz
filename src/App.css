@@ -119,3 +119,18 @@ nav {
   color: red;
   font-weight: 700;
 }
+
+.selected-answer {
+  background-color: blueviolet !important;
+  color: white;
+}
+
+.wrong-answer {
+  background-color: red !important;
+  color: white;
+}
+
+.correct-answer {
+  background-color: green !important;
+  color: white;
+}

@@ -57,11 +57,22 @@ function App() {
   const [isQuizStart, setIsQuizStart] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
   const [refreshIntervalId, setRefreshIntervalId] = useState(null);
+  const [isAnswer, setIsAnswer] = useState(false);
   const options = ["A", "B", "C", "D"];
   // var refreshIntervalId = null;
 
   const selectedOptionStyle = {
     backgroundColor: "blueviolet",
+    color: "white",
+  };
+
+  const correctAnswerStyle = {
+    backgroundColor: "green",
+    color: "white",
+  };
+
+  const wrongAnswerStyle = {
+    backgroundColor: "red",
     color: "white",
   };
 
@@ -83,16 +94,34 @@ function App() {
 
   function getOpotions(question) {
     let optionItems = question.options.map((option, index) => {
+      let optionStyle = "";
+      if (
+        // question.selectedAnswer === question.correctAnswer &&
+        question.correctAnswer === option &&
+        isAnswer
+      ) {
+        optionStyle += " correct-answer";
+      }
+      if (
+        question.selectedAnswer !== question.correctAnswer &&
+        question.selectedAnswer === option &&
+        isAnswer
+      ) {
+        optionStyle += " wrong-answer";
+      }
+
+      if (
+        question.selectedAnswer !== undefined &&
+        question.selectedAnswer === option &&
+        isAnswer === false
+      ) {
+        optionStyle += " selected-answer";
+      }
       return (
         <p
           onClick={(e) => handleOptionClick(option)}
           id={option}
-          style={
-            question.selectedAnswer !== undefined &&
-            question.selectedAnswer === option
-              ? selectedOptionStyle
-              : null
-          }
+          className={optionStyle}
         >
           {options[index] + ". " + option}
         </p>
@@ -175,17 +204,18 @@ function App() {
     );
   }
 
-  function Question() {
+  function QuestionPage({ question }) {
+    console.log("Question Page Triggered");
     return (
-      <div className="App">
-        <div>
-          <nav>
-            <h2>Java Quiz</h2>
-            <p id="time"></p>
-          </nav>
-          <div className="quiz-container">
+      // <div className="App">
+      <div>
+        <nav>
+          <h2>Java Quiz</h2>
+          <p id="time"></p>
+        </nav>
+        <Question currentQuestion={question} />
+        {/* <div className="quiz-container">
             <div className="question">
-              {/* <p>Question</p> */}
               <h4>
                 {question[currQuestion].questionNo +
                   ". " +
@@ -198,9 +228,34 @@ function App() {
                 <button type="submit" onClick={() => handleNext()}>
                   Next
                 </button>
-                {/* <button type="submit">Pre</button> */}
               </div>
             </div>
+          </div> */}
+      </div>
+      // </div>
+    );
+  }
+
+  function Question({ currentQuestion }) {
+    console.log("currentQuestion");
+    console.log(currentQuestion);
+    return (
+      <div className="quiz-container">
+        <div className="question">
+          {/* <p>Question</p> */}
+          <h4>
+            {currentQuestion.questionNo + ". " + currentQuestion.question}
+          </h4>
+          <div className="option">{getOpotions(currentQuestion)}</div>
+          <div className="redirect-btn">
+            <button
+              type="submit"
+              onClick={() => handleNext()}
+              style={isAnswer ? { display: "none" } : null}
+            >
+              Next
+            </button>
+            {/* <button type="submit">Pre</button> */}
           </div>
         </div>
       </div>
@@ -251,7 +306,7 @@ function App() {
 
   function handleReviewAnswer() {
     console.log("triggred");
-    return <Question />;
+    setIsAnswer(true);
   }
 
   function getCrtQuesCount(question) {
@@ -268,19 +323,44 @@ function App() {
     return correctCount;
   }
 
-  function Answer() {
-    <Question />;
+  function Answer({ questions }) {
+    console.log(question);
+    return (
+      <div>
+        <h3>Answer</h3>
+        {getAllAnswer(questions)}
+      </div>
+    );
+  }
+
+  function getAllAnswer(questions) {
+    console.log("get all answer triggered...");
+    let allAnswer = questions.map((quest) => {
+      return <Question currentQuestion={quest} />;
+    });
+    console.log("allAnswer");
+    console.log(allAnswer);
+    return allAnswer;
   }
 
   return (
-    <div>
-      {isLastQuestion ? (
+    <div className="App">
+      {isAnswer ? (
+        <Answer questions={question} />
+      ) : isLastQuestion ? (
         <Result question={question} />
       ) : isQuizStart ? (
-        <Question />
+        <QuestionPage question={question[currQuestion]} />
       ) : (
         <StartQuiz />
       )}
+      {/* {isLastQuestion ? (
+        <Result question={question} />
+      ) : isQuizStart ? (
+        <QuestionPage />
+      ) : (
+        <StartQuiz />
+      )} */}
     </div>
   );
 }
