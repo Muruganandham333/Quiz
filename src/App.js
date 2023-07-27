@@ -52,39 +52,14 @@ function App() {
   ];
 
   const [question, setQuestion] = useState(questions);
-  console.log("set question value");
   const [currQuestion, setcurrQuestion] = useState(0);
   const [isQuizStart, setIsQuizStart] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
   const [refreshIntervalId, setRefreshIntervalId] = useState(null);
   const [isAnswer, setIsAnswer] = useState(false);
   const options = ["A", "B", "C", "D"];
-  // var refreshIntervalId = null;
-
-  const selectedOptionStyle = {
-    backgroundColor: "blueviolet",
-    color: "white",
-  };
-
-  const correctAnswerStyle = {
-    backgroundColor: "green",
-    color: "white",
-  };
-
-  const wrongAnswerStyle = {
-    backgroundColor: "red",
-    color: "white",
-  };
 
   function handleOptionClick(val) {
-    // const oldQuestions = questions.slice();
-    // const currentQuestion = oldQuestions[currQuestion];
-    // console.log("currentQuestion");
-    // console.log(currentQuestion);
-    // currentQuestion.selectedAnswer = val;
-    // oldQuestions[currQuestion] = currentQuestion;
-    // console.log(oldQuestions);
-    // setQuestion(oldQuestions);
     const questionAndAnswer = Object.assign({}, question[currQuestion]);
     questionAndAnswer.selectedAnswer = val;
     const newQuestions = question.slice();
@@ -128,38 +103,34 @@ function App() {
         // </div>
       );
     });
-    //console.log(optionItems);
     return optionItems;
   }
 
   function handleNext() {
     let nextQuestionNo = currQuestion + 1;
     const questionSize = question.length - 1;
-    console.log(
-      "nextQuestionNo" + nextQuestionNo + " question length " + questionSize
-    );
     if (nextQuestionNo > questionSize) {
-      // alert("There is no question available please add more");
-      console.log("refreshIntervalId" + refreshIntervalId);
       clearInterval(refreshIntervalId);
       setIsLastQuestion(true);
-      // return;
     }
     setcurrQuestion(nextQuestionNo);
   }
 
   var currentDate = new Date();
-  var twentyMinutesLater = new Date(currentDate.getTime() + 10 * 60 * 1000);
-  function startTimer() {
+  var twentyMinutesLater = new Date(currentDate.getTime() + 5 * 60 * 1000);
+  function startTimer(refreshIntervalId) {
     const diffTime = twentyMinutesLater - Date.now();
-    //console.log("diffTime " + diffTime);
     const minutes = Math.floor((diffTime / 1000 / 60) % 60);
     const seconds = Math.floor((diffTime / 1000) % 60);
     const timer =
       (minutes > 9 ? minutes : "0" + minutes) +
       ":" +
       (seconds > 9 ? seconds : "0" + seconds);
-    //console.log("timer " + timer);
+
+    if (minutes == 0 && seconds == 0) {
+      setIsLastQuestion(true);
+      clearInterval(refreshIntervalId);
+    }
     document.getElementById("time").innerHTML = timer;
   }
 
@@ -167,24 +138,10 @@ function App() {
     setIsQuizStart(true);
 
     const refreshIntervalId = setInterval(() => {
-      startTimer();
+      startTimer(refreshIntervalId);
     }, 1000);
     setRefreshIntervalId(refreshIntervalId);
-    console.log("refreshIntervalId " + refreshIntervalId);
-    // clearInterval(refreshIntervalId);
-    // setInterval(() => {
-    //   stopTimer();
-    // }, 10000);
-
-    // useEffect(() => {
-    //   startTimer();
-    // }, 1000);
   }
-
-  // function stopTimer() {
-  //   console.log("stop timmer called");
-  //   clearInterval(refreshIntervalId);
-  // }
 
   function StartQuiz() {
     return (
@@ -205,7 +162,6 @@ function App() {
   }
 
   function QuestionPage({ question }) {
-    console.log("Question Page Triggered");
     return (
       // <div className="App">
       <div>
@@ -213,50 +169,28 @@ function App() {
           <h2>Java Quiz</h2>
           <p id="time"></p>
         </nav>
-        <Question currentQuestion={question} />
-        {/* <div className="quiz-container">
-            <div className="question">
-              <h4>
-                {question[currQuestion].questionNo +
-                  ". " +
-                  question[currQuestion].question}
-              </h4>
-              <div className="option">
-                {getOpotions(question[currQuestion])}
-              </div>
-              <div className="redirect-btn">
-                <button type="submit" onClick={() => handleNext()}>
-                  Next
-                </button>
-              </div>
-            </div>
-          </div> */}
+        <div className="quiz-container">
+          <Question currentQuestion={question} />
+        </div>
       </div>
       // </div>
     );
   }
 
   function Question({ currentQuestion }) {
-    console.log("currentQuestion");
-    console.log(currentQuestion);
+    let optionClass = isAnswer ? "option no-hover" : "option";
     return (
-      <div className="quiz-container">
-        <div className="question">
-          {/* <p>Question</p> */}
-          <h4>
-            {currentQuestion.questionNo + ". " + currentQuestion.question}
-          </h4>
-          <div className="option">{getOpotions(currentQuestion)}</div>
-          <div className="redirect-btn">
-            <button
-              type="submit"
-              onClick={() => handleNext()}
-              style={isAnswer ? { display: "none" } : null}
-            >
-              Next
-            </button>
-            {/* <button type="submit">Pre</button> */}
-          </div>
+      <div className="question">
+        <h4>{currentQuestion.questionNo + ". " + currentQuestion.question}</h4>
+        <div className={optionClass}>{getOpotions(currentQuestion)}</div>
+        <div className="redirect-btn">
+          <button
+            type="submit"
+            onClick={() => handleNext()}
+            style={isAnswer ? { display: "none" } : null}
+          >
+            Next
+          </button>
         </div>
       </div>
     );
@@ -265,11 +199,14 @@ function App() {
   function Result({ question }) {
     const correctCount = getCrtQuesCount(question);
     const questionCount = question.length;
-    console.log("correctCount " + correctCount);
     return (
       <div className="result-container">
         <div className="result-page">
-          <button className="btn" type="submit">
+          <button
+            type="submit"
+            className="btn"
+            onClick={() => handleTryAgainBtn()}
+          >
             Try Again
           </button>
           <table>
@@ -305,12 +242,10 @@ function App() {
   }
 
   function handleReviewAnswer() {
-    console.log("triggred");
     setIsAnswer(true);
   }
 
   function getCrtQuesCount(question) {
-    console.log(question);
     let correctCount = 0;
     question.map((quest) => {
       if (
@@ -324,22 +259,34 @@ function App() {
   }
 
   function Answer({ questions }) {
-    console.log(question);
     return (
       <div>
         <h3>Answer</h3>
         {getAllAnswer(questions)}
+        <button
+          type="submit"
+          className="btn try-again"
+          onClick={() => handleTryAgainBtn()}
+        >
+          Try Again
+        </button>
       </div>
     );
   }
 
+  function handleTryAgainBtn() {
+    setIsQuizStart(true);
+    setIsLastQuestion(false);
+    setcurrQuestion(0);
+    setQuestion(questions);
+    setIsAnswer(false);
+    handleStartQuizBtn();
+  }
+
   function getAllAnswer(questions) {
-    console.log("get all answer triggered...");
     let allAnswer = questions.map((quest) => {
       return <Question currentQuestion={quest} />;
     });
-    console.log("allAnswer");
-    console.log(allAnswer);
     return allAnswer;
   }
 
