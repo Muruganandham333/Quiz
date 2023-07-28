@@ -167,7 +167,7 @@ function App() {
       <div>
         <nav>
           <h2>Java Quiz</h2>
-          <h2 id="time"></h2>
+          <h2 id="time">Timer</h2>
         </nav>
         <div className="quiz-container">
           <Question currentQuestion={question} />
@@ -248,7 +248,7 @@ function App() {
 
   function getCrtQuesCount(question) {
     let correctCount = 0;
-    return question.map((quest) => {
+    question.forEach((quest) => {
       if (
         quest.selectedAnswer !== "" &&
         quest.selectedAnswer === quest.correctAnswer
@@ -256,7 +256,7 @@ function App() {
         correctCount += 1;
       }
     });
-    // return correctCount;
+    return correctCount;
   }
 
   function Answer({ questions }) {
