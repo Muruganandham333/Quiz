@@ -145,19 +145,19 @@ function App() {
 
   function StartQuiz() {
     return (
-      <div className="App">
-        <div className="landing-page">
-          <h1>Start the Quiz</h1>
-          <p>Good luck!</p>
-          <button
-            type="submit"
-            className="button"
-            onClick={() => handleStartQuizBtn()}
-          >
-            Start the Java Quiz ❯
-          </button>
-        </div>
+      // <div className="App">
+      <div className="landing-page">
+        <h1>Java Basic Quiz</h1>
+        {/* <p>Good luck!</p> */}
+        <button
+          type="submit"
+          className="btn start-btn"
+          onClick={() => handleStartQuizBtn()}
+        >
+          Start Quiz ❯
+        </button>
       </div>
+      // </div>
     );
   }
 
@@ -167,7 +167,7 @@ function App() {
       <div>
         <nav>
           <h2>Java Quiz</h2>
-          <p id="time"></p>
+          <h2 id="time"></h2>
         </nav>
         <div className="quiz-container">
           <Question currentQuestion={question} />
@@ -188,6 +188,7 @@ function App() {
             type="submit"
             onClick={() => handleNext()}
             style={isAnswer ? { display: "none" } : null}
+            className="next-btn"
           >
             Next
           </button>
@@ -260,7 +261,7 @@ function App() {
 
   function Answer({ questions }) {
     return (
-      <div>
+      <div className="answer-container">
         <h3>Answer</h3>
         {getAllAnswer(questions)}
         <button
@@ -290,8 +291,13 @@ function App() {
     return allAnswer;
   }
 
+  let className = "App ";
+  if (isAnswer) {
+    className += "full-height";
+  }
+
   return (
-    <div className="App">
+    <div className={className}>
       {isAnswer ? (
         <Answer questions={question} />
       ) : isLastQuestion ? (
