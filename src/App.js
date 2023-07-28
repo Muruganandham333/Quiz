@@ -127,7 +127,7 @@ function App() {
       ":" +
       (seconds > 9 ? seconds : "0" + seconds);
 
-    if (minutes == 0 && seconds == 0) {
+    if (minutes === 0 && seconds === 0) {
       setIsLastQuestion(true);
       clearInterval(refreshIntervalId);
     }
@@ -248,7 +248,7 @@ function App() {
 
   function getCrtQuesCount(question) {
     let correctCount = 0;
-    question.map((quest) => {
+    return question.map((quest) => {
       if (
         quest.selectedAnswer !== "" &&
         quest.selectedAnswer === quest.correctAnswer
@@ -256,7 +256,7 @@ function App() {
         correctCount += 1;
       }
     });
-    return correctCount;
+    // return correctCount;
   }
 
   function Answer({ questions }) {
