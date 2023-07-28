@@ -82,7 +82,7 @@ nav {
 
 .redirect-btn {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   padding: 0px 20px;
 }
 
