@@ -6,6 +6,7 @@
   flex-direction: column;
   background-color: black;
   color: white;
+  justify-content: start;
 }
 
 nav {
@@ -32,7 +33,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 85vh;
+  /* height: 85vh; */
   overflow: auto;
 }
 
