@@ -51,10 +51,9 @@ function App() {
     },
   ];
 
-  console.log(questions.sort(() => Math.random() - questions.length / 10));
-
   const [question, setQuestion] = useState(
-    questions.sort(() => Math.random() - questions.length / 10)
+    // questions.sort(() => Math.random() - questions.length / 10)
+    questions.sort(() => Math.random() - 0.5)
   );
   const [currQuestion, setcurrQuestion] = useState(0);
   const [isQuizStart, setIsQuizStart] = useState(false);
@@ -75,7 +74,8 @@ function App() {
     let shuffleOPtion = question.options;
     if (question.selectedAnswer === "") {
       shuffleOPtion = question.options.sort(
-        () => Math.random() - question.options.length / 10
+        // () => Math.random() - question.options.length / 10
+        () => Math.random() - 0.5
       );
     }
 
