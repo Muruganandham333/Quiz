@@ -51,7 +51,11 @@ function App() {
     },
   ];
 
-  const [question, setQuestion] = useState(questions);
+  console.log(questions.sort(() => Math.random() - questions.length / 10));
+
+  const [question, setQuestion] = useState(
+    questions.sort(() => Math.random() - questions.length / 10)
+  );
   const [currQuestion, setcurrQuestion] = useState(0);
   const [isQuizStart, setIsQuizStart] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
@@ -68,7 +72,16 @@ function App() {
   }
 
   function getOpotions(question) {
-    let optionItems = question.options.map((option, index) => {
+    let shuffleOPtion = question.options;
+    if (question.selectedAnswer === "") {
+      shuffleOPtion = question.options.sort(
+        () => Math.random() - question.options.length / 10
+      );
+    }
+
+    console.log("array size" + question.options.length / 10);
+    console.log("shuffleOPtion " + shuffleOPtion);
+    let optionItems = shuffleOPtion.map((option, index) => {
       let optionStyle = "";
       if (
         // question.selectedAnswer === question.correctAnswer &&
@@ -162,6 +175,7 @@ function App() {
   }
 
   function QuestionPage({ question }) {
+    console.log("Question Page function Component Called");
     return (
       // <div className="App">
       <div>
@@ -170,18 +184,18 @@ function App() {
           <h2 id="time">Timer</h2>
         </nav>
         <div className="quiz-container">
-          <Question currentQuestion={question} />
+          <Question currentQuestion={question} questionNo={currQuestion} />
         </div>
       </div>
       // </div>
     );
   }
 
-  function Question({ currentQuestion }) {
+  function Question({ currentQuestion, questionNo }) {
     let optionClass = isAnswer ? "option no-hover" : "option";
     return (
       <div className="question">
-        <h4>{currentQuestion.questionNo + ". " + currentQuestion.question}</h4>
+        <h4>{questionNo + 1 + ". " + currentQuestion.question}</h4>
         <div className={optionClass}>{getOpotions(currentQuestion)}</div>
         <div className="redirect-btn">
           <button
@@ -285,8 +299,8 @@ function App() {
   }
 
   function getAllAnswer(questions) {
-    let allAnswer = questions.map((quest) => {
-      return <Question currentQuestion={quest} />;
+    let allAnswer = questions.map((quest, index) => {
+      return <Question currentQuestion={quest} questionNo={index} />;
     });
     return allAnswer;
   }

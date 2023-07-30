@@ -167,6 +167,10 @@ nav {
   /* background: blueviolet; */
   color: white;
   font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* height: 100vh; */
 }
 
 .landing-page h1 {
@@ -214,5 +218,9 @@ nav {
 
   .btn {
     font-size: 14px;
+  }
+
+  .try-again {
+    width: 75vw;
   }
 }
